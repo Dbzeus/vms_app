@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1015907130381",
+    "project_id": "dbz-vms",
+    "storage_bucket": "dbz-vms.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1015907130381:android:49f16a9ef02d786fc44944",
+        "android_client_info": {
+          "package_name": "vms.dbzeus.com"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1015907130381-mf2316up2ll1hobjfbnshvbqaiavthlg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVKQ200wUL2vc0Jc6ygNQIYO9PKFZyaGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1015907130381-mf2316up2ll1hobjfbnshvbqaiavthlg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
