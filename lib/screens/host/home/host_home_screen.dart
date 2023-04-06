@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttericon/web_symbols_icons.dart';
 import 'package:get/get.dart';
+import 'package:upgrader/upgrader.dart';
 import 'package:vms_app/helper/colors.dart';
 import 'package:vms_app/model/host_dashboard_response.dart';
 import 'package:vms_app/routes/app_routes.dart';
@@ -19,45 +20,46 @@ class HostHomeScreen extends GetView<HostHomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Obx(
-          () => controller.logo.value.isEmpty
-              ? const SizedBox.shrink()
-              : CachedNetworkImage(
-                  imageUrl: controller.logo.value,
-                ),
-        ),
-        title: Obx(
-          () => Text(
-            'Hi ${controller.name.value}!',
-            style: const TextStyle(fontSize: 17),
+    return UpgradeAlert(
+      child: Scaffold(
+        appBar: AppBar(
+          leading: Obx(
+            () => controller.logo.value.isEmpty
+                ? const SizedBox.shrink()
+                : CachedNetworkImage(
+                    imageUrl: controller.logo.value,
+                  ),
           ),
+          title: Obx(
+            () => Text(
+              'Hi ${controller.name.value}!',
+              style: const TextStyle(fontSize: 17),
+            ),
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  //app logout
+                  Get.toNamed(Routes.NOTIFICATION);
+                },
+                icon: const Icon(
+                  Icons.notifications_rounded,
+                )),
+            IconButton(
+                onPressed: () {
+                  //app logout
+                  controller.logout();
+                },
+                icon: const Icon(
+                  WebSymbols.logout,
+                  size: 17,
+                ))
+          ],
         ),
-        actions: [
-          IconButton(
-              onPressed: () {
-                //app logout
-                Get.toNamed(Routes.NOTIFICATION);
-              },
-              icon: const Icon(
-                Icons.notifications_rounded,
-              )),
-          IconButton(
-              onPressed: () {
-                //app logout
-                controller.logout();
-              },
-              icon: const Icon(
-                WebSymbols.logout,
-                size: 17,
-              ))
-        ],
-      ),
-      body: Stack(
+        body: Stack(
           children: [
             RefreshIndicator(
-              onRefresh: (){
+              onRefresh: () {
                 return controller.getVisitorList();
               },
               child: SingleChildScrollView(
@@ -148,7 +150,8 @@ class HostHomeScreen extends GetView<HostHomeController> {
                                       shrinkWrap: true,
                                       physics: const BouncingScrollPhysics(),
                                       scrollDirection: Axis.horizontal,
-                                      itemCount: controller.dashboardList.length,
+                                      itemCount:
+                                          controller.dashboardList.length,
                                       itemBuilder: (_, index) {
                                         return companyListItem(
                                             controller.dashboardList[index]);
@@ -216,9 +219,12 @@ class HostHomeScreen extends GetView<HostHomeController> {
                                       : 5,
                                   itemBuilder: (_, index) {
                                     return HostVisitorList(
-                                      controller.visitorList[index],
-                                            (id)=>controller.onActionClick(id,controller.visitorList[index].visitorID, index)
-                                    );
+                                        controller.visitorList[index],
+                                        (id) => controller.onActionClick(
+                                            id,
+                                            controller
+                                                .visitorList[index].visitorID,
+                                            index));
                                   },
                                 )),
                     ],
@@ -236,6 +242,7 @@ class HostHomeScreen extends GetView<HostHomeController> {
                 : const SizedBox.shrink()),
           ],
         ),
+      ),
     );
   }
 

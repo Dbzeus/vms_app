@@ -1,19 +1,14 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:package_info/package_info.dart';
 import 'package:vms_app/apis/api_call.dart';
 import 'package:vms_app/helper/constants.dart';
 import 'package:vms_app/helper/utils.dart';
 import 'package:vms_app/model/visitor_response.dart';
 import 'package:vms_app/routes/app_routes.dart';
-import 'package:vms_app/widget/button.dart';
 import 'package:vms_app/widget/spinner.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class GateHomeController extends GetxController {
   final noController = TextEditingController();
@@ -49,7 +44,6 @@ class GateHomeController extends GetxController {
     name(_box.read(FIRST_NAME) ?? "");
 
     getCompanyList();
-    checkAppVersion();
   }
 
   changeCompany(String? val) {
@@ -66,6 +60,7 @@ class GateHomeController extends GetxController {
   changeLocation(String? val) {
     if (val != null) {
       location(val);
+      _box.write(SELECTED_LOCATION, val);
       getGateList();
     }
   }
@@ -73,6 +68,7 @@ class GateHomeController extends GetxController {
   changeGate(String? val) {
     if (val != null) {
       gate(val);
+      _box.write(SELECTED_GATE, val);
       getSystemList();
     }
   }
@@ -80,8 +76,13 @@ class GateHomeController extends GetxController {
   changeSystem(String? val) {
     if (val != null) {
       system(val);
+      _box.write(SELECTED_SYSTEM, val);
       getVisitorList();
     }
+  }
+
+  checkIsCorrect(String? id, List list) {
+    return !list.any((element) => element['id'] == id);
   }
 
   getCompanyList() async {
@@ -102,8 +103,9 @@ class GateHomeController extends GetxController {
 
           //check session
           if ((_box.read(SELECTED_CLIENT) == null ||
-                  _box.read(CLIENT_GROUP_ID) == null) &&
-              companyList.isNotEmpty) {
+                  _box.read(CLIENT_GROUP_ID) == null) ||
+              (companyList.isNotEmpty &&
+                  checkIsCorrect(_box.read(SELECTED_CLIENT), companyList))) {
             _box.write(SELECTED_CLIENT, companyList.first['id']);
             _box.write(CLIENT_GROUP_ID, companyList.first['group']);
           }
@@ -124,7 +126,6 @@ class GateHomeController extends GetxController {
       var response = await ApiCall().getLocations(company.value);
       if (response != null) {
         locationList.clear();
-        _box.remove(SELECTED_LOCATION);
         if (response['RtnStatus']) {
           for (var r in response['RtnData']) {
             locationList.add({
@@ -134,7 +135,9 @@ class GateHomeController extends GetxController {
           }
 
           //check session
-          if (_box.read(SELECTED_LOCATION) == null && locationList.isNotEmpty) {
+          if (_box.read(SELECTED_LOCATION) == null ||
+              (locationList.isNotEmpty &&
+                  checkIsCorrect(_box.read(SELECTED_LOCATION), locationList))) {
             _box.write(SELECTED_LOCATION, locationList.first['id']);
           }
           location(_box.read(SELECTED_LOCATION) ?? '');
@@ -154,7 +157,6 @@ class GateHomeController extends GetxController {
           await ApiCall().getGateLit('0', company.value, location.value, '0');
       if (response != null) {
         gateList.clear();
-        _box.remove(SELECTED_GATE);
         if (response['RtnStatus']) {
           for (var r in response['RtnData']) {
             gateList.add({
@@ -164,7 +166,9 @@ class GateHomeController extends GetxController {
           }
 
           //check session
-          if (_box.read(SELECTED_GATE) == null && gateList.isNotEmpty) {
+          if (_box.read(SELECTED_GATE) == null ||
+              (gateList.isNotEmpty &&
+                  checkIsCorrect(_box.read(SELECTED_GATE), gateList))) {
             _box.write(SELECTED_GATE, gateList.first['id']);
           }
           gate(_box.read(SELECTED_GATE) ?? '');
@@ -184,7 +188,6 @@ class GateHomeController extends GetxController {
           .getSystemList(company.value, location.value, gate.value, '0');
       if (response != null) {
         systemList.clear();
-        _box.remove(SELECTED_SYSTEM);
         if (response['RtnStatus']) {
           for (var r in response['RtnData']) {
             systemList.add({
@@ -194,7 +197,9 @@ class GateHomeController extends GetxController {
           }
 
           //check session
-          if (_box.read(SELECTED_SYSTEM) == null && systemList.isNotEmpty) {
+          if (_box.read(SELECTED_SYSTEM) == null ||
+              (systemList.isNotEmpty &&
+                  checkIsCorrect(_box.read(SELECTED_SYSTEM), systemList))) {
             _box.write(SELECTED_SYSTEM, systemList.first['id']);
           }
           system(_box.read(SELECTED_SYSTEM) ?? '');
@@ -325,7 +330,7 @@ class GateHomeController extends GetxController {
     }
   }
 
-  checkAppVersion() async {
+/*  checkAppVersion() async {
     if (await isNetConnected()) {
       try {
         var response = await ApiCall().getAppVersion();
@@ -388,5 +393,5 @@ class GateHomeController extends GetxController {
         //ignored
       }
     }
-  }
+  }*/
 }

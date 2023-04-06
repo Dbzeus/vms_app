@@ -1,18 +1,13 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
-import 'package:package_info/package_info.dart';
 import 'package:vms_app/apis/api_call.dart';
 import 'package:vms_app/helper/constants.dart';
 import 'package:vms_app/helper/utils.dart';
 import 'package:vms_app/model/host_dashboard_response.dart';
 import 'package:vms_app/model/host_visitor_response.dart';
 import 'package:vms_app/routes/app_routes.dart';
-import 'package:url_launcher/url_launcher_string.dart';
-import 'package:vms_app/widget/button.dart';
 
 class HostHomeController extends GetxController {
   final noController = TextEditingController();
@@ -58,7 +53,6 @@ class HostHomeController extends GetxController {
             sendFormat.parse(toDate))}');
 
     getLocationList();
-    checkAppVersion();
   }
 
   getLocationList() async {
@@ -165,7 +159,7 @@ class HostHomeController extends GetxController {
     Get.offAllNamed(Routes.LOGIN);
   }
 
-  checkAppVersion() async {
+ /* checkAppVersion() async {
     if (await isNetConnected()) {
       try {
         var response = await ApiCall().getAppVersion();
@@ -232,7 +226,7 @@ class HostHomeController extends GetxController {
         //ignored
       }
     }
-  }
+  }*/
 
   onActionClick(int id, int visitorId, int index) async {
     if (await isNetConnected()) {

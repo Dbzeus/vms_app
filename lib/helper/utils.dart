@@ -2,10 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:vms_app/helper/colors.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 
 showSnackbar(String? title, String? msg) {
@@ -53,7 +53,7 @@ Future<String?> showOptionDialog() async {
                   ElevatedButton(
                     onPressed: () async {
                       final pickedFile = await _picker.pickImage(
-                          source: ImageSource.camera, imageQuality: 50);
+                          source: ImageSource.camera, imageQuality: 15);
 
                       if (pickedFile != null) {
                         var r = base64Encode(
@@ -78,7 +78,7 @@ Future<String?> showOptionDialog() async {
                   ElevatedButton(
                     onPressed: () async {
                       final pickedFile = await _picker.pickImage(
-                          source: ImageSource.gallery, imageQuality: 50);
+                          source: ImageSource.gallery, imageQuality: 15);
 
                       if (pickedFile != null) {
                         var r = base64Encode(

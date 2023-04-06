@@ -5,7 +5,6 @@ import 'package:dio/dio.dart';
 import 'package:vms_app/apis/urls.dart';
 import 'package:vms_app/helper/utils.dart';
 import 'package:vms_app/main.dart';
-
 import 'package:vms_app/model/approver_list_response.dart';
 import 'package:vms_app/model/host_dashboard_response.dart';
 import 'package:vms_app/model/host_visitor_response.dart';
@@ -582,7 +581,7 @@ class ApiCall {
     }
   }
 
-  Future<dynamic> getAppVersion() async {
+/*  Future<dynamic> getAppVersion() async {
     var uri = Uri.https(
       'dbzmind.dbzapps.com',
       'app_version.json',
@@ -595,7 +594,7 @@ class ApiCall {
       print('notification : response status code > 205');
       return null;
     }
-  }
+  }*/
 
   Future<dynamic> sendActionCall(int userId, int id, int visitorId) async {
     var params = {
